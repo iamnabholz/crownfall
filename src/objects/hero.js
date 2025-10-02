@@ -8,7 +8,7 @@ import { buildGUI } from "../components/charactergui";
 export function hero() {
   // PARENT OBJECT
   const object = k.add([
-    k.pos(k.center().x, k.height() - GameState.yOffset),
+    k.pos(GameState.xPosition, k.height() - GameState.yOffset),
     k.anchor("center"),
     k.layer("game"),
     {

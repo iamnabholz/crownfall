@@ -14,7 +14,7 @@ export function enemy() {
   // PARENT OBJECT
   const object = k.add([
     k.health(stats.health),
-    k.pos(k.center().x, GameState.yOffset + 5),
+    k.pos(GameState.xPosition, GameState.yOffset + 5),
     k.area({ shape: new k.Rect(k.vec2(0), 16, 16) }),
     k.anchor("center"),
     k.layer("game"),

@@ -2,9 +2,15 @@ import { k, GameState, setTintColor } from "../kaplay";
 import "./lose";
 import { hero } from "../objects/hero";
 import { enemy } from "../objects/enemy";
+import { getOffsetPosition } from "../utils/utils";
 
 k.scene("game", () => {
   const bg = "bg" + k.randi(5);
+
+  k.onResize(() => {
+    GameState.yOffset = getOffsetPosition();
+    GameState.xPosition = k.center().x;
+  });
 
   k.add([
     k.sprite(bg.toString()),
@@ -15,6 +21,8 @@ k.scene("game", () => {
 
   const player = hero();
   player.canShoot = true;
+
+  const pos = k.vec2(k.center().x + GameState.xOffset, player.pos.y);
 
   let enemy_obj = enemy();
 
@@ -97,24 +105,14 @@ k.scene("game", () => {
         text: "by FABRIC VISIONS",
         anchor: "center",
         align: "center",
-        pos: k.vec2(k.center().x, k.height() - 10),
+        pos: k.vec2(k.center().x, k.center().y + 92),
         letterSpacing: -2.8,
         size: 8,
         opacity: 0.4,
       });
     } else if (GameState.mode == "game") {
       if (GameState.score >= 0) {
-        const pos = k.vec2(k.center().x + GameState.xOffset, player.pos.y);
-
         // SCORE TEXT
-        k.drawSprite({
-          sprite: "border",
-          pos: k.vec2(pos.x - 1, pos.y - 1),
-          width: 56,
-          height: 48,
-          anchor: "center",
-        });
-
         k.drawText({
           text: String(GameState.score).padStart(2, "0"),
           size: 28,
