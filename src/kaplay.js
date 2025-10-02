@@ -5,8 +5,8 @@ import { loadAssets } from "./loader";
 
 export const k = kaplay({
   global: false,
-  width: 240,
-  height: 208,
+  //width: 240,
+  //height: 208,
   scale: 4,
   font: "NameHere",
   crisp: true,

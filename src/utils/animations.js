@@ -10,7 +10,7 @@ export function animateShakingObject(obj, duration = 0.2, intensity = 3) {
     (t) => {
       // t goes from 0 → 1 over `duration`
       // multiply by frequency to get N oscillations per second
-      const angle = t * 20 * Math.PI * 2 * duration;
+      const angle = t * 10 * Math.PI * 2 * duration;
       obj.pos.x = startX + Math.sin(angle) * intensity;
     },
     k.easings.easeOutCubic,
