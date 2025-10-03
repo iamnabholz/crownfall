@@ -5,19 +5,31 @@ import { enemy } from "../objects/enemy";
 import { getOffsetPosition } from "../utils/utils";
 
 k.scene("game", () => {
-  const bg = "bg" + k.randi(5);
-
   k.onResize(() => {
     GameState.yOffset = getOffsetPosition();
     GameState.xPosition = k.center().x;
   });
 
-  k.add([
-    k.sprite(bg.toString()),
-    k.pos(k.center()),
-    k.anchor("center"),
+  function setBackgroundPosition() {
+    return k.vec2(k.randi(4, 32 - wid - 4), k.randi(4, 32 - wid - 4));
+  }
+
+  let bg = "bg" + 0;
+  const wid = Math.floor(k.width() / 16 / 2);
+  let bgPos = setBackgroundPosition();
+
+  const bgItem = k.add([
+    //k.sprite(bg.toString()),
     k.layer("background"),
   ]);
+
+  bgItem.onDraw(() => {
+    k.drawSprite({
+      sprite: bg.toString(),
+      pos: k.vec2(bgPos.x * -16, bgPos.y * -16),
+      //anchor: "center",
+    });
+  });
 
   const player = hero();
   player.canShoot = true;
@@ -59,11 +71,46 @@ k.scene("game", () => {
 
   k.onButtonPress("secondary", () => {
     //player.maxAmmo += 1;
-    player.ammo = player.maxAmmo;
+    //player.ammo = player.maxAmmo;
+    setTintColor();
+    bgPos = setBackgroundPosition();
   });
 
   k.onButtonDown("primary", () => {
     shootProjectile();
+  });
+
+  let opacityWaving = 1;
+  let controlSchemeFrame = 0;
+  function animateFadeToSpriteChange() {
+    k.tween(
+      1,
+      0,
+      1,
+      (p) => (opacityWaving = p),
+      k.easings.easeInOutCubic,
+    ).onEnd(() => {
+      if (controlSchemeFrame == k.getSprite("inputs").data.frames.length - 1) {
+        controlSchemeFrame = 0;
+      } else {
+        controlSchemeFrame += 1;
+      }
+      k.tween(
+        0,
+        1,
+        1,
+        (p) => (opacityWaving = p),
+        k.easings.easeInOutCubic,
+      ).onEnd(() => {
+        k.wait(3, () => {
+          animateFadeToSpriteChange();
+        });
+      });
+    });
+  }
+
+  k.wait(4, () => {
+    animateFadeToSpriteChange();
   });
 
   k.onDraw(() => {
@@ -87,7 +134,8 @@ k.scene("game", () => {
       k.drawSprite({
         sprite: "inputs",
         pos: k.vec2(k.center().x - 7.7, k.center().y + 20),
-        frame: 1,
+        opacity: opacityWaving,
+        frame: controlSchemeFrame,
         anchor: "center",
       });
 
@@ -111,7 +159,7 @@ k.scene("game", () => {
         opacity: 0.4,
       });
     } else if (GameState.mode == "game") {
-      if (GameState.score >= 0) {
+      if (GameState.score > 0) {
         // SCORE TEXT
         k.drawText({
           text: String(GameState.score).padStart(2, "0"),

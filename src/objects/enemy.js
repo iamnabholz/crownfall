@@ -18,6 +18,25 @@ export function enemy() {
     k.area({ shape: new k.Rect(k.vec2(0), 16, 16) }),
     k.anchor("center"),
     k.layer("game"),
+    k.particles(
+      {
+        max: 100,
+        speed: [60, 80],
+        damping: [2.0, 3.0],
+        lifeTime: [0.85, 1.2],
+        angle: [0, 360],
+        texture: k.getSprite("hit").data.tex, // texture of a sprite
+        quads: [
+          k.getSprite("hit").data.frames[0],
+          k.getSprite("explode").data.frames[1],
+          k.getSprite("explode").data.frames[0],
+        ], // frames of a sprite
+      },
+      {
+        direction: 0,
+        spread: 360,
+      },
+    ),
     {
       shields: stats.shields,
       radius: stats.radius,
@@ -58,13 +77,23 @@ export function enemy() {
   object.onDeath(() => {
     object.unuse("health");
     k.shake(4);
+
     const timer = 0.25 * object.createdShields.length + 1;
+
     animateShakingObject(sprite, timer, 2);
+
+    k.loop(
+      0.25,
+      () => {
+        object.emit(4);
+      },
+      object.createdShields.length + 1,
+    );
 
     k.tween(
       GameState.score,
       (GameState.score += object.score),
-      2,
+      timer,
       (p) => (GameState.score = Math.ceil(p)),
       k.easings.easeOutQuint,
     );

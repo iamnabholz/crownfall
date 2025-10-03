@@ -30,12 +30,12 @@ export const k = kaplay({
 });
 
 export const GameState = {
-  difficulty: "easy",
+  difficulty: k.choose(["easy", "medium", "hard"]),
   mode: "start",
   score: 0,
   highscore: 0,
   yOffset: getOffsetPosition(),
-  xOffset: 72,
+  xOffset: 64,
   xPosition: k.center().x,
   spacing: 6,
   tintColor: [244, 78, 56],

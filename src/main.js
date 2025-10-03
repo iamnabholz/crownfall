@@ -2,15 +2,6 @@ import { k } from "./kaplay";
 import "./scenes/game";
 import "./scenes/menu";
 
-k.loadSprite("border", "/sprites/border.png", {
-  slice9: {
-    left: 6,
-    right: 6,
-    top: 6,
-    bottom: 6,
-  },
-});
-
 k.loadSpriteAtlas("sprites/gui-sheet.png", {
   diamond: {
     x: 0,
@@ -31,7 +22,7 @@ k.loadSpriteAtlas("sprites/gui-sheet.png", {
     width: 16,
     height: 16,
   },
-  /*border: {
+  border: {
     x: 16,
     y: 0,
     width: 16,
@@ -42,7 +33,7 @@ k.loadSpriteAtlas("sprites/gui-sheet.png", {
       top: 2,
       bottom: 2,
     },
-    },*/
+  },
   restart: {
     x: 16,
     y: 16,
@@ -52,9 +43,9 @@ k.loadSpriteAtlas("sprites/gui-sheet.png", {
   inputs: {
     x: 0,
     y: 32,
-    width: 64,
+    width: 80,
     height: 16,
-    sliceX: 4,
+    sliceX: 5,
   },
 });
 
@@ -124,13 +115,16 @@ k.loadSpriteAtlas("sprites/fx-sheet.png", {
       },
     },
   },
+  particle: {
+    x: 64,
+    y: 16,
+    width: 32,
+    height: 16,
+    sliceX: 2,
+  },
 });
 
 k.loadSprite("bg0", "map/backgrounds/png/Level_0.png");
-k.loadSprite("bg1", "map/backgrounds/png/Level_1.png");
-k.loadSprite("bg2", "map/backgrounds/png/Level_2.png");
-k.loadSprite("bg3", "map/backgrounds/png/Level_3.png");
-k.loadSprite("bg4", "map/backgrounds/png/Level_4.png");
 
 k.setLayers(["background", "game", "foreground", "shader"], "shader");
 
