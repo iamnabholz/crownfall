@@ -11,6 +11,15 @@ export function buildGUI(OPTIONS, number, maxNumber, mirror = false) {
     flipX: mirror,
   });
 
+  /*if (mirror) {
+    k.drawSprite({
+      sprite: "diamond",
+      pos: k.vec2((OPTIONS.xOffset - 17) * dir, 0),
+      anchor: "center",
+      flipX: false,
+    });
+    }*/
+
   k.drawText({
     text: number.toString(),
     size: 14,
@@ -24,20 +33,19 @@ export function buildGUI(OPTIONS, number, maxNumber, mirror = false) {
   // Sprites in a zig-zag way
   for (let i = 0; i < maxNumber; i++) {
     // base position
-    const baseX = dir * (OPTIONS.xOffset + 11);
-    const baseY = i * OPTIONS.spacing + 6;
+    const baseX = dir * (OPTIONS.xOffset + 13);
+    const baseY = i * OPTIONS.spacing + 8;
 
     // every odd index nudges X by a certain amount
     const zigzagOffset = i % 2 === 0 ? 0 : OPTIONS.spacing;
 
     k.drawSprite({
       sprite: "point",
-      frame: i < number ? 0 : 1,
+      frame: i < number ? (mirror ? 1 : 0) : 2,
       opacity: i < number ? 1 : 0.5,
       pos: k.vec2(baseX - dir * zigzagOffset, dir * baseY),
       anchor: "center",
-      flipY: !mirror,
-      flipX: !mirror,
+      //flipX: !mirror,
     });
   }
 }

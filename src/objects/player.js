@@ -1,17 +1,19 @@
-import { k, GameState } from "../kaplay";
+import { k } from "../kaplay";
+import { GameState } from "../main";
+
 import {
   animateFloatingObject,
   animateSquashStretchObject,
 } from "../utils/animations";
 import { buildGUI } from "../components/charactergui";
 
-export function hero() {
+export function buildPlayer() {
   // PARENT OBJECT
   const object = k.add([
     k.pos(GameState.xPosition, k.height() - GameState.yOffset),
     k.anchor("center"),
-    k.layer("game"),
     {
+      isAlive: true,
       canShoot: false,
       reloadSpeed: 10,
       bulletSpeed: 3,
@@ -28,10 +30,10 @@ export function hero() {
     k.sprite("hero"),
     k.pos(),
     k.animate({ relative: true }),
-    k.layer("game"),
-    k.z(1),
     k.anchor("center"),
     k.timer(),
+    k.layer("game"),
+    k.z(2),
   ]);
 
   animateFloatingObject(sprite);
@@ -63,13 +65,14 @@ export function hero() {
         k.area({ scale: 0.4 }),
         k.offscreen({ destroy: true }),
         k.anchor("center"),
-        k.layer("game"),
         k.move(k.UP, object.bulletSpeed * 30),
+        k.layer("game"),
         "bullet",
       ]);
 
       function collide() {
         bullet.unuse("move");
+        bullet.o;
 
         bullet.sprite = "hit";
         bullet.play("play");

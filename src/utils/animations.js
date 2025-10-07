@@ -30,8 +30,8 @@ export function animateShakingObject(obj, duration = 0.2, intensity = 3) {
   );
 }
 
-export function animateFloatingObject(obj) {
-  obj.animate("pos", [k.vec2(0), k.vec2(0, 2)], {
+export function animateFloatingObject(obj, backwards = false) {
+  obj.animate("pos", [k.vec2(0), k.vec2(0, backwards ? 2 : -2)], {
     duration: 1,
     direction: "ping-pong",
     easing: k.easings.easeInOutSine,
