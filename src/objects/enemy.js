@@ -10,7 +10,22 @@ import { getEnemyConfig } from "../utils/difficulty";
 import { shieldSetup } from "./shields";
 
 export function buildEnemy({ onDeath } = {}) {
-  const stats = getEnemyConfig(GameState.difficulty);
+  const config = [
+    "easy",
+    "medium",
+    "hard",
+    "easy",
+    "medium",
+    "hard",
+    "easy",
+    "medium",
+    "easy",
+    "medium",
+    "imposible",
+  ];
+  let slo = k.choose(config);
+  let stats = getEnemyConfig(slo);
+  console.log(slo);
 
   // PARENT OBJECT
   const object = k.add([

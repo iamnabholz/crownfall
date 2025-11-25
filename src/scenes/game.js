@@ -32,13 +32,7 @@ k.scene("game", () => {
     const enemy = buildEnemy({
       onDeath: (enemy) => {
         player.canShoot = false;
-        FloorState.currentRoom += 1;
         GameState.enemiesBeaten += 1;
-
-        if (FloorState.currentRoom >= FloorState.totalRooms) {
-          FloorState.currentRoom = 0;
-          FloorState.totalRooms = k.randi(2, 5);
-        }
 
         // Game-level reactions
         k.tween(
@@ -232,7 +226,7 @@ k.scene("game", () => {
           size: 28,
           pos: k.vec2(
             k.center().x + GameState.xOffset,
-            k.height() - GameState.yOffset - 28,
+            k.height() - GameState.yOffset,
           ),
           anchor: "center",
           align: "center",
@@ -245,7 +239,7 @@ k.scene("game", () => {
           size: 8,
           pos: k.vec2(
             k.center().x + GameState.xOffset,
-            k.height() - GameState.yOffset - 16,
+            k.height() - GameState.yOffset - 12,
           ),
           anchor: "center",
           align: "center",

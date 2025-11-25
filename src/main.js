@@ -5,12 +5,12 @@ import "./scenes/menu";
 
 export const GameState = {
   yOffset: getOffsetPosition(),
-  xOffset: 64,
+  xOffset: window.screen.orientation.type.includes("landscape") ? 64 : 36,
   xPosition: k.center().x,
   spacing: 8,
   tintColor: [244, 78, 56],
   particles: null,
-  difficulty: "TEST",
+  difficulty: "medium",
   mode: "start",
   score: 0,
   highscore: 0,
