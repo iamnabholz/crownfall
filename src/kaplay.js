@@ -7,7 +7,7 @@ export const k = kaplay({
   global: false,
   //width: 240,
   //height: 208,
-  scale: 4,
+  scale: window.screen.orientation.type.includes("landscape") ? 4 : 8,
   font: "NameHere",
   crisp: true,
   texFilter: "nearest",

@@ -3,14 +3,7 @@ import { GameState } from "../main";
 import "./lose";
 import { buildPlayer } from "../objects/player";
 import { buildEnemy } from "../objects/enemy";
-import { toRoman } from "../utils/utils";
 import { setTintColor } from "../loader";
-
-const FloorState = {
-  currentFloor: 1,
-  currentRoom: 0,
-  totalRooms: k.randi(2, 5),
-};
 
 k.scene("game", () => {
   function setBackgroundPosition() {
@@ -20,6 +13,7 @@ k.scene("game", () => {
   let bg = "bg" + 0;
   const wid = Math.floor(k.width() / 16 / 2);
   let bgPos = setBackgroundPosition();
+  const aspectRatio = 192 / 32;
 
   const ob = k.add([k.layer("background")]);
 
@@ -37,13 +31,12 @@ k.scene("game", () => {
   function spawnEnemy() {
     const enemy = buildEnemy({
       onDeath: (enemy) => {
+        player.canShoot = false;
         FloorState.currentRoom += 1;
         GameState.enemiesBeaten += 1;
-        //GameState.floor += 1;
 
         if (FloorState.currentRoom >= FloorState.totalRooms) {
           FloorState.currentRoom = 0;
-          GameState.floor += 1;
           FloorState.totalRooms = k.randi(2, 5);
         }
 
@@ -61,6 +54,7 @@ k.scene("game", () => {
           bgPos = setBackgroundPosition();
           setTintColor();
           spawnEnemy();
+          player.canShoot = true;
         });
       },
     });
@@ -83,6 +77,7 @@ k.scene("game", () => {
       //animateShakingObject(sprite, timer, 2);
 
       player.isAlive = false;
+      //enemy.unuse("health");
       k.shake(6);
       GameState.particles.pos = player.pos;
 
@@ -186,25 +181,26 @@ k.scene("game", () => {
 
   k.onDraw(() => {
     if (GameState.mode == "start") {
+      const titleWidthCalculation =
+        window.innerWidth > 768 &&
+        window.screen.orientation.type.includes("landscape")
+          ? 192
+          : window.innerWidth / 8;
+
+      const titleHeightCalculation = titleWidthCalculation / aspectRatio;
+
       k.drawSprite({
+        width: titleWidthCalculation,
+        height: titleHeightCalculation,
+        scale: k.vec2(1),
         sprite: "TITLE",
         pos: k.vec2(k.center().x + 1, k.center().y + 10),
         anchor: "center",
       });
 
-      /*k.drawText({
-        text: "CROWNFALL",
-        anchor: "center",
-        align: "center",
-        pos: k.center(),
-        size: 32,
-        font: "Alkhemikal",
-        letterSpacing: -4,
-      });*/
-
       k.drawSprite({
         sprite: "inputs",
-        pos: k.vec2(k.center().x - 7.7, k.center().y + 34),
+        pos: k.vec2(k.center().x - 7, k.center().y + 34),
         opacity: opacityWaving,
         frame: controlSchemeFrame,
         anchor: "center",
@@ -215,9 +211,8 @@ k.scene("game", () => {
         anchor: "center",
         align: "center",
         pos: k.vec2(k.center().x, k.center().y + 34),
-        letterSpacing: -5,
-        //font: "Menu",
-        size: 14,
+        letterSpacing: -4,
+        size: 12,
       });
 
       k.drawText({
@@ -230,52 +225,6 @@ k.scene("game", () => {
         opacity: 0.4,
       });
     } else if (GameState.mode == "game") {
-      //return;
-      k.drawText({
-        text: "FLOOR",
-        size: 6,
-        pos: k.vec2(
-          k.center().x + GameState.xOffset,
-          k.height() - GameState.yOffset - 8,
-        ),
-        anchor: "center",
-        align: "center",
-        font: "Alkhemikal",
-        letterSpacing: -1,
-      });
-
-      k.drawText({
-        text: toRoman(GameState.floor),
-        size: 10,
-        pos: k.vec2(
-          k.center().x + GameState.xOffset,
-          k.height() - GameState.yOffset,
-        ),
-        anchor: "center",
-        align: "center",
-        //font: "Alkhemikal",
-        letterSpacing: -3,
-      });
-
-      for (let i = 0; i < FloorState.totalRooms; i++) {
-        const x =
-          k.center().x +
-          GameState.xOffset -
-          14 / 2 +
-          (i * 14) / (FloorState.totalRooms - 1);
-        const y = k.height() - GameState.yOffset + 10;
-
-        k.drawRect({
-          width: 3,
-          height: 3,
-          pos: k.vec2(x, y),
-          anchor: "center",
-          opacity: i > FloorState.currentRoom ? 0.2 : 1,
-          fill: i > FloorState.currentRoom ? false : true,
-          outline: { width: 0.5, join: "miter" },
-        });
-      }
-
       if (GameState.score > 0) {
         // SCORE TEXT
         k.drawText({

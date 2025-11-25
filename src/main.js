@@ -10,12 +10,11 @@ export const GameState = {
   spacing: 8,
   tintColor: [244, 78, 56],
   particles: null,
-  difficulty: "hard",
+  difficulty: "TEST",
   mode: "start",
   score: 0,
   highscore: 0,
   enemiesBeaten: 0,
-  floor: 1,
 };
 
 k.setLayers(["background", "game", "foreground"], "foreground");

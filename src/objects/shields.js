@@ -31,6 +31,7 @@ export function shieldSetup(object) {
 
   object.onUpdate(() => {
     if (!object.has("health")) return;
+
     const t = k.time() * object.speed * object.direction;
     object.createdShields.forEach(({ shield, index }, i) => {
       const angle = ((2 * Math.PI) / object.shields) * i + t;
